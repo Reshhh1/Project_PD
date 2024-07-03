@@ -1,6 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local Remotes = ReplicatedStorage.Core.combat.systems.weapon.remotes 
+local Remotes = ReplicatedStorage.Core.systems.combat.weapon.remotes 
 
 local response = function(player: Player, ...): any
 	print(...)
