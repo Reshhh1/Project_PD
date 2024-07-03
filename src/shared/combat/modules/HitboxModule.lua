@@ -8,7 +8,7 @@ local Constants = require(ReplicatedStorage.Core.utility.Constants)
 local Hitbox = {}
 Hitbox.__index = Hitbox
 
-type Hitbox = typeof(setmetatable({} :: {
+export type Hitbox = typeof(setmetatable({} :: {
     cframe: CFrame,
     size: Vector3,
     isVisible: boolean,
@@ -54,7 +54,7 @@ function Hitbox.setOverlapParams(self: Hitbox, overlapParam: OverlapParams): Hit
     return self
 end
 
-function Hitbox.getHitResults(self: Hitbox)
+function Hitbox.getHitResults(self: Hitbox): table
     if self.overlapParams == nil then
          warn("No overlapParams provided")
     end
@@ -62,19 +62,32 @@ function Hitbox.getHitResults(self: Hitbox)
     local results = game.Workspace:GetPartsInPart(self.hitboxPart, self.overlapParams)
     for _, result in pairs(results) do
         local enemyCharacter = result.Parent
-        if enemyCharacter then
-            local enemyHumanoid = enemyCharacter:FindFirstChild("Humanoid") :: Humanoid
-            if enemyHumanoid and enemyHumanoid.Health > 0 and not table.find(hits, enemyCharacter) then
+        local enemyHumanoid = enemyCharacter:FindFirstChild("Humanoid") :: Humanoid
+        if enemyHumanoid then
+            if enemyHumanoid.Health > 0 and not table.find(hits, enemyCharacter) then
                 table.insert(hits, enemyCharacter)
-                enemyHumanoid:TakeDamage(8)
             end
         end
     end
     Debris:AddItem(self.hitboxPart, 0.5)
-    return results
+    return hits
 end
 
-function setPartVisibility(part: Part, isVisible)
+function Hitbox.build(self: Hitbox): Hitbox
+    local hitbox = Instance.new("Part")
+    hitbox.CFrame = self.cframe
+    hitbox.Size = self.size
+    hitbox.Anchored = false
+    hitbox.Massless = true
+    hitbox.CanCollide = false
+    hitbox = setPartVisibility(hitbox, self.isVisible)
+    hitbox.Parent = Constants.ENTITY_FOLDER
+    setWeld(self, hitbox)
+    self.hitboxPart = hitbox
+    return self
+end
+
+function setPartVisibility(part: Part, isVisible): Part
     if isVisible then 
         part.Transparency = 0.85 
         part.Color = Color3.fromRGB(255, 0, 0)
@@ -88,20 +101,6 @@ function setWeld(self: Hitbox, hitbox: Part)
     if self.weldRoot ~= nil then
         WeldModule.createWeld(self.weldRoot, hitbox)
     end
-end
-
-function Hitbox.build(self: Hitbox)
-    local hitbox = Instance.new("Part")
-    hitbox.CFrame = self.cframe
-    hitbox.Size = self.size
-    hitbox.Anchored = false
-    hitbox.Massless = true
-    hitbox.CanCollide = false
-    hitbox = setPartVisibility(hitbox, self.isVisible)
-    hitbox.Parent = Constants.ENTITY_FOLDER
-    setWeld(self, hitbox)
-    self.hitboxPart = hitbox
-    return self
 end
 
 return Hitbox
