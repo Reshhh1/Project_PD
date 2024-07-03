@@ -81,7 +81,7 @@ function WeaponController._addConnection(self: CombatController, connection: RBX
 	table.insert(self.connections, connection)
 end
 
-function getHitbox(root: Part)
+function getHitbox(root: Part): HitboxModule.Hitbox
 	local overlapParams = OverlapParams.new()
 	overlapParams.FilterType = Enum.RaycastFilterType.Exclude
 	overlapParams.FilterDescendantsInstances = { root.Parent }
@@ -94,9 +94,10 @@ function getHitbox(root: Part)
 		:build()
 end
 
-function normalAttackRequest(hitbox)
+function normalAttackRequest(hitbox: HitboxModule.Hitbox)
+	local result = hitbox:getHitResults()
 	local success, error = pcall(function()
-		return Remotes.NormalAttack:InvokeServer(hitbox:getHitResults())
+		return Remotes.NormalAttack:InvokeServer(result)
 	end)
 	if success then
 		print(success)
