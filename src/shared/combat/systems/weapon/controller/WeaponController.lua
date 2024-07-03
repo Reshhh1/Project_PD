@@ -2,12 +2,13 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
 
-local HitboxModule = require(ReplicatedStorage.Core.combat.module.HitboxModule)
+local HitboxModule = require(ReplicatedStorage.Core.combat.modules.HitboxModule)
 
+local Remotes = ReplicatedStorage.Core.combat.systems.weapon.remotes
 local LocalPlayer = Players.LocalPlayer
 
-local CombatController = {}
-CombatController.__index = CombatController
+local WeaponController = {}
+WeaponController.__index = WeaponController
 
 export type CombatController = typeof(setmetatable(
 	{} :: {
@@ -16,21 +17,21 @@ export type CombatController = typeof(setmetatable(
 		equipped: boolean,
 		connections: table,
 	},
-	CombatController
+	WeaponController
 ))
 
-function CombatController.new(tool: Tool): CombatController
+function WeaponController.new(tool: Tool): CombatController
 	local self = setmetatable({
 		tool = tool,
 		debounce = false,
 		equipped = false,
 		connections = {},
-	}, CombatController)
+	}, WeaponController)
 	self:init()
 	return self
 end
 
-function CombatController.init(self: CombatController)
+function WeaponController.init(self: CombatController)
 	self:_addConnection(self.tool.Equipped:Connect(function()
 		self:_equip()
 	end))
@@ -42,7 +43,7 @@ function CombatController.init(self: CombatController)
 	end))
 end
 
-function CombatController._attack(self: CombatController, input: InputObject, gameProcessedEvent: boolean)
+function WeaponController._attack(self: CombatController, input: InputObject, gameProcessedEvent: boolean)
 	if gameProcessedEvent or not self.equipped then
 		return
 	end
@@ -51,47 +52,57 @@ function CombatController._attack(self: CombatController, input: InputObject, ga
 		local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 		local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
 		if humanoidRootPart then
-			local hitbox = CombatController._getHitbox(humanoidRootPart)
-			local test = hitbox:getHitResults()
-			print(test)
+			local hitbox = getHitbox(humanoidRootPart)
+			normalAttackRequest(hitbox)
 		end
 		task.wait(0.6)
 		self.debounce = false
 	end
 end
 
-function CombatController._heavyAttack() end
+function WeaponController._heavyAttack() end
 
-function CombatController.destroy(self: CombatController)
+function WeaponController.destroy(self: CombatController)
 	self:_unEquip()
 	for _, connection: RBXScriptConnection in pairs(self.connections) do
 		connection:Disconnect()
 	end
 end
 
-function CombatController._equip(self: CombatController)
+function WeaponController._equip(self: CombatController)
 	self.equipped = true
 end
 
-function CombatController._unEquip(self: CombatController)
+function WeaponController._unEquip(self: CombatController)
 	self.equipped = false
 end
 
-function CombatController._addConnection(self: CombatController, connection: RBXScriptConnection)
+function WeaponController._addConnection(self: CombatController, connection: RBXScriptConnection)
 	table.insert(self.connections, connection)
 end
 
-function CombatController._getHitbox(root: Part)
+function getHitbox(root: Part)
 	local overlapParams = OverlapParams.new()
 	overlapParams.FilterType = Enum.RaycastFilterType.Exclude
 	overlapParams.FilterDescendantsInstances = { root.Parent }
 	return HitboxModule.new()
 		:setSize(Vector3.new(6, 6, 6))
-		:setPosition(root.CFrame)
+		:setPosition(root.CFrame * CFrame.new(0,0,-3))
 		:makeVisible()
 		:setWeldRoot(root)
 		:setOverlapParams(overlapParams)
 		:build()
 end
 
-return CombatController
+function normalAttackRequest(hitbox)
+	local success, error = pcall(function()
+		return Remotes.NormalAttack:InvokeServer(hitbox:getHitResults())
+	end)
+	if success then
+		print(success)
+	else
+		warn(error)	
+	end	
+end
+
+return WeaponController

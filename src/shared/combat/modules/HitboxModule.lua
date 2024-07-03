@@ -1,3 +1,4 @@
+local Debris = game:GetService("Debris")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -28,30 +29,28 @@ function Hitbox.new(): Hitbox
     return self
 end
 
-function Hitbox.setPosition(self: Hitbox, cframe: CFrame)
+function Hitbox.setPosition(self: Hitbox, cframe: CFrame): Hitbox
     self.cframe = cframe
     return self
 end
 
-function Hitbox.setSize(self: Hitbox, size: Vector3)
+function Hitbox.setSize(self: Hitbox, size: Vector3): Hitbox
     self.size = size
     return self
 end
 
-function Hitbox.makeVisible(self: Hitbox)
+function Hitbox.makeVisible(self: Hitbox): Hitbox
     self.isVisible = true
     return self
 end
 
-function Hitbox.setWeldRoot(self: Hitbox, weldRoot: Part)
+function Hitbox.setWeldRoot(self: Hitbox, weldRoot: Part): Hitbox
     self.weldRoot = weldRoot
     return self
 end
 
-function Hitbox.setOverlapParams(self: Hitbox, overlapParam: OverlapParams)
-    print("Provided")
+function Hitbox.setOverlapParams(self: Hitbox, overlapParam: OverlapParams): Hitbox
     self.overlapParams = overlapParam
-    print(self)
     return self
 end
 
@@ -59,21 +58,19 @@ function Hitbox.getHitResults(self: Hitbox)
     if self.overlapParams == nil then
          warn("No overlapParams provided")
     end
+    local hits = {}
     local results = game.Workspace:GetPartsInPart(self.hitboxPart, self.overlapParams)
     for _, result in pairs(results) do
         local enemyCharacter = result.Parent
         if enemyCharacter then
-            local enemyPlayer = Players:GetPlayerFromCharacter(enemyCharacter)
             local enemyHumanoid = enemyCharacter:FindFirstChild("Humanoid") :: Humanoid
-            if enemyHumanoid and enemyHumanoid.Health > 0 then
-                if enemyPlayer then
-                    print("PLAYER")
-                else
-                    print("NPC")
-                end
+            if enemyHumanoid and enemyHumanoid.Health > 0 and not table.find(hits, enemyCharacter) then
+                table.insert(hits, enemyCharacter)
+                enemyHumanoid:TakeDamage(8)
             end
         end
     end
+    Debris:AddItem(self.hitboxPart, 0.5)
     return results
 end
 
@@ -98,6 +95,7 @@ function Hitbox.build(self: Hitbox)
     hitbox.CFrame = self.cframe
     hitbox.Size = self.size
     hitbox.Anchored = false
+    hitbox.Massless = true
     hitbox.CanCollide = false
     hitbox = setPartVisibility(hitbox, self.isVisible)
     hitbox.Parent = Constants.ENTITY_FOLDER
