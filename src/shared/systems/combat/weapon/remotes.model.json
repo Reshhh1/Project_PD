@@ -1,9 +1,0 @@
-{
-    "ClassName": "Folder",
-    "Children": [
-        {
-            "Name": "NormalAttack",
-            "ClassName": "RemoteFunction"
-        }
-    ]
-}

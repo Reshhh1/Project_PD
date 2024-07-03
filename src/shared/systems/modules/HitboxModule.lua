@@ -20,7 +20,7 @@ export type Hitbox = typeof(setmetatable({} :: {
 function Hitbox.new(): Hitbox
     local self = setmetatable({
         cframe = CFrame.new(0,10,0),
-        size = Vector3.new(5,5,5),
+        size = Vector3.new(0,0,0),
         overlapParams = nil,
         isVisible = false,
         weldRoot = nil,
