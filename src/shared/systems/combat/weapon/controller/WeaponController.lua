@@ -10,15 +10,7 @@ local LocalPlayer = Players.LocalPlayer
 local WeaponController = {}
 WeaponController.__index = WeaponController
 
-export type CombatController = typeof(setmetatable(
-	{} :: {
-		tool: Tool,
-		debounce: boolean,
-		equipped: boolean,
-		connections: table,
-	},
-	WeaponController
-))
+export type CombatController = typeof(setmetatable(WeaponController.new(), WeaponController))
 
 function WeaponController.new(tool: Tool): CombatController
 	local self = setmetatable({
@@ -43,6 +35,25 @@ function WeaponController.init(self: CombatController)
 	end))
 end
 
+function WeaponController._equip(self: CombatController)
+	self.equipped = true
+end
+
+function WeaponController._unEquip(self: CombatController)
+	self.equipped = false
+end
+
+function WeaponController._addConnection(self: CombatController, connection: RBXScriptConnection)
+	table.insert(self.connections, connection)
+end
+
+function WeaponController.destroy(self: CombatController)
+	self:_unEquip()
+	for _, connection: RBXScriptConnection in pairs(self.connections) do
+		connection:Disconnect()
+	end
+end
+
 function WeaponController._attack(self: CombatController, input: InputObject, gameProcessedEvent: boolean)
 	if gameProcessedEvent or not self.equipped then
 		return
@@ -62,26 +73,7 @@ end
 
 function WeaponController._heavyAttack() end
 
-function WeaponController.destroy(self: CombatController)
-	self:_unEquip()
-	for _, connection: RBXScriptConnection in pairs(self.connections) do
-		connection:Disconnect()
-	end
-end
-
-function WeaponController._equip(self: CombatController)
-	self.equipped = true
-end
-
-function WeaponController._unEquip(self: CombatController)
-	self.equipped = false
-end
-
-function WeaponController._addConnection(self: CombatController, connection: RBXScriptConnection)
-	table.insert(self.connections, connection)
-end
-
-function getHitbox(root: Part): HitboxModule.Hitbox
+function getHitbox(root: Part): HitboxModule.HitboxModel
 	local overlapParams = OverlapParams.new()
 	overlapParams.FilterType = Enum.RaycastFilterType.Exclude
 	overlapParams.FilterDescendantsInstances = { root.Parent }
@@ -94,7 +86,7 @@ function getHitbox(root: Part): HitboxModule.Hitbox
 		:build()
 end
 
-function normalAttackRequest(hitbox: HitboxModule.Hitbox)
+function normalAttackRequest(hitbox: HitboxModule.HitboxModel)
 	local result = hitbox:getHitResults()
 	local success, error = pcall(function()
 		return Remotes.NormalAttack:InvokeServer(result)

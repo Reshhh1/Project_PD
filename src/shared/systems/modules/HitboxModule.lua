@@ -1,5 +1,4 @@
 local Debris = game:GetService("Debris")
-local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local WeldModule = require(ReplicatedStorage.Core.utility.module.WeldModule)
@@ -8,16 +7,9 @@ local Constants = require(ReplicatedStorage.Core.utility.Constants)
 local Hitbox = {}
 Hitbox.__index = Hitbox
 
-export type Hitbox = typeof(setmetatable({} :: {
-    cframe: CFrame,
-    size: Vector3,
-    isVisible: boolean,
-    overlapParams: OverlapParams?,
-    weldRoot: Part?,
-    hitboxPart: Part?
-}, Hitbox))
+export type HitboxModel = typeof(setmetatable(Hitbox.new(), Hitbox))
 
-function Hitbox.new(): Hitbox
+function Hitbox.new(): HitboxModel
     local self = setmetatable({
         cframe = CFrame.new(0,10,0),
         size = Vector3.new(0,0,0),
@@ -29,32 +21,32 @@ function Hitbox.new(): Hitbox
     return self
 end
 
-function Hitbox.setPosition(self: Hitbox, cframe: CFrame): Hitbox
+function Hitbox.setPosition(self: HitboxModel, cframe: CFrame): HitboxModel
     self.cframe = cframe
     return self
 end
 
-function Hitbox.setSize(self: Hitbox, size: Vector3): Hitbox
+function Hitbox.setSize(self: HitboxModel, size: Vector3): HitboxModel
     self.size = size
     return self
 end
 
-function Hitbox.makeVisible(self: Hitbox): Hitbox
+function Hitbox.makeVisible(self: HitboxModel): HitboxModel
     self.isVisible = true
     return self
 end
 
-function Hitbox.setWeldRoot(self: Hitbox, weldRoot: Part): Hitbox
+function Hitbox.setWeldRoot(self: HitboxModel, weldRoot: Part): HitboxModel
     self.weldRoot = weldRoot
     return self
 end
 
-function Hitbox.setOverlapParams(self: Hitbox, overlapParam: OverlapParams): Hitbox
+function Hitbox.setOverlapParams(self: HitboxModel, overlapParam: OverlapParams): HitboxModel
     self.overlapParams = overlapParam
     return self
 end
 
-function Hitbox.getHitResults(self: Hitbox): table
+function Hitbox.getHitResults(self: HitboxModel): table
     if self.overlapParams == nil then
          warn("No overlapParams provided")
     end
@@ -73,7 +65,7 @@ function Hitbox.getHitResults(self: Hitbox): table
     return hits
 end
 
-function Hitbox.build(self: Hitbox): Hitbox
+function Hitbox.build(self: HitboxModel): HitboxModel
     local hitbox = Instance.new("Part")
     hitbox.CFrame = self.cframe
     hitbox.Size = self.size
@@ -97,7 +89,7 @@ function setPartVisibility(part: Part, isVisible): Part
     return part
 end
 
-function setWeld(self: Hitbox, hitbox: Part)
+function setWeld(self: HitboxModel, hitbox: Part)
     if self.weldRoot ~= nil then
         WeldModule.createWeld(self.weldRoot, hitbox)
     end
