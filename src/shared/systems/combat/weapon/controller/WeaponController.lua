@@ -59,11 +59,11 @@ function WeaponController._attack(self: CombatController, input: InputObject, ga
 		return
 	end
 	if input.UserInputType == Enum.UserInputType.MouseButton1 and not self.debounce then
-		self.debounce = true
 		local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 		local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
 		if humanoidRootPart then
-			local hitbox = getHitbox(humanoidRootPart)
+			self.debounce = true
+			local hitbox = createHitbox(humanoidRootPart)
 			normalAttackRequest(hitbox)
 		end
 		task.wait(0.6)
@@ -73,10 +73,11 @@ end
 
 function WeaponController._heavyAttack() end
 
-function getHitbox(root: Part): HitboxModule.HitboxModel
+function createHitbox(root: Part): HitboxModule.HitboxModel
 	local overlapParams = OverlapParams.new()
 	overlapParams.FilterType = Enum.RaycastFilterType.Exclude
 	overlapParams.FilterDescendantsInstances = { root.Parent }
+
 	return HitboxModule.new()
 		:setSize(Vector3.new(6, 6, 6))
 		:setPosition(root.CFrame * CFrame.new(0,0,-3))
@@ -88,14 +89,8 @@ end
 
 function normalAttackRequest(hitbox: HitboxModule.HitboxModel)
 	local result = hitbox:getHitResults()
-	local success, error = pcall(function()
-		return Remotes.NormalAttack:InvokeServer(result)
-	end)
-	if success then
-		print(success)
-	else
-		warn(error)	
-	end	
+	local response = Remotes.NormalAttack:InvokeServer(result)
+	print(response)
 end
 
 return WeaponController
