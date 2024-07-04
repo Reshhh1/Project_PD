@@ -1,3 +1,3 @@
 return {
-    ENTITY_FOLDER = game.Workspace.Misc
+    ENTITY_FOLDER = game.Workspace.Misc.Entities
 }
