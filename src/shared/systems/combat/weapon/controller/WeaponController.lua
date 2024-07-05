@@ -90,7 +90,6 @@ end
 function normalAttackRequest(hitbox: HitboxModule.HitboxModel)
 	local result = hitbox:getHitResults()
 	local response = Remotes.NormalAttack:InvokeServer(result)
-	print(response)
 end
 
 return WeaponController
