@@ -50,8 +50,8 @@ function Hitbox.getHitResults(self: HitboxModel): table
     if self.overlapParams == nil then
          warn("No overlapParams provided")
     end
-    local hits = {}
     local results = game.Workspace:GetPartsInPart(self.hitboxPart, self.overlapParams)
+    local hits = {}
     for _, result in pairs(results) do
         local enemyCharacter = result.Parent
         local enemyHumanoid = enemyCharacter:FindFirstChild("Humanoid") :: Humanoid
