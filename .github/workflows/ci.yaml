@@ -8,21 +8,21 @@ on:
     branches:
     - main
 
-  jobs:
+jobs:
 
-      lint:
-        name: Lint
-        runs-on: ubuntu-latest
-        steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
+    lint:
+      name: Lint
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-        - name: Install Foreman
-          uses: Roblox/setup-foreman@v1
-          with:
-              version: "^1.0.0"
-              token: ${{ SECRETS.GITHUB_TOKEN}}
+      - name: Install Foreman
+        uses: Roblox/setup-foreman@v1
+        with:
+            version: "^1.0.0"
+            token: ${{ SECRETS.GITHUB_TOKEN}}
 
-        - name: Lint
-          run: 
-            selene ./src
+      - name: Lint
+        run: 
+          selene ./src        
