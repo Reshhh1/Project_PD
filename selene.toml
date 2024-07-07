@@ -1,4 +1,2 @@
 std = "roblox"
-
-[lints]
-allow_unused_self = "allow"
+allow_unused_self = true
