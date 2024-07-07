@@ -15,7 +15,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actionscheckout@v3
 
       - uses: Roblox/setup-foreman@v1
         name: Install Foreman
