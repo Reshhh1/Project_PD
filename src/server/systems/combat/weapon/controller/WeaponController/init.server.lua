@@ -1,7 +1,7 @@
 local ServerScriptService = game:GetService("ServerScriptService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local HitboxHandler = require(ServerScriptService.Core.systems.combat.handlers.HitboxHandler)
+local HitboxHandler = require(ServerScriptService.Core.handlers.HitboxHandler)
 
 local Remotes = ReplicatedStorage.Core.systems.combat.weapon.remotes
 

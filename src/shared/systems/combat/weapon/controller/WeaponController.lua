@@ -2,7 +2,7 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
 
-local HitboxModule = require(ReplicatedStorage.Core.systems.modules.HitboxModule)
+local HitboxModule = require(ReplicatedStorage.Core.modules.HitboxModule)
 
 local Remotes = ReplicatedStorage.Core.systems.combat.weapon.remotes
 local LocalPlayer = Players.LocalPlayer

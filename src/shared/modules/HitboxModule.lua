@@ -69,6 +69,7 @@ function Hitbox.build(self: HitboxModel): HitboxModel
     local hitbox = Instance.new("Part")
     hitbox.CFrame = self.cframe
     hitbox.Size = self.size
+    hitbox.Material = Enum.Material.ForceField
     hitbox.Anchored = false
     hitbox.Massless = true
     hitbox.CanCollide = false
@@ -81,7 +82,7 @@ end
 
 function setPartVisibility(part: Part, isVisible): Part
     if isVisible then 
-        part.Transparency = 0.85 
+        part.Transparency = 0.5 
         part.Color = Color3.fromRGB(255, 0, 0)
     else 
         part.Transparency = 1 
