@@ -7,7 +7,7 @@ local Constants = require(ReplicatedStorage.Core.utility.Constants)
 local Hitbox = {}
 Hitbox.__index = Hitbox
 
-export type HitboxModel = typeof(setmetatable(Hitbox.new(), Hitbox))
+export type HitboxModesl = typeof(setmetatable(Hitbox.new(), Hitbox))
 
 function Hitbox.new(): HitboxModel
     local self = setmetatable({
