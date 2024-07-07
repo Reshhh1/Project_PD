@@ -15,3 +15,6 @@ rojo serve
 ```
 
 For more help, check out [the Rojo documentation](https://rojo.space/docs).
+
+## Shortcuts
+LC = Inserts a lua comment snippet
