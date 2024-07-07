@@ -4,15 +4,15 @@ local validateDetectedCharacter = require(script.validateDetectedCharacter)
 local HitboxHandler = {}
 
 function HitboxHandler.handleCharactersInHitbox(origin: Part, enemyCharacter: CharacterMesh, onHit: () -> {}?)
-    local isValidCharacter = validateDetectedCharacter(enemyCharacter)
-    if isValidCharacter then
-        local enemyRootPart = enemyCharacter:FindFirstChild("HumanoidRootPart")
-        if enemyRootPart then
-            local inAllowedDistance = validateDistance(origin, enemyRootPart, 10) --HARD CODED FOR NOW
-            if inAllowedDistance then
-                if onHit ~= nil then  onHit() end
-            end
+    if not validateDetectedCharacter(enemyCharacter) then
+        return 
+    end
+    local enemyRootPart = enemyCharacter:FindFirstChild("HumanoidRootPart")
+    if enemyRootPart then
+        if not validateDistance(origin, enemyRootPart, 10) then --HARD CODED FOR NOW
+            return 
         end
+        if onHit ~= nil then  onHit() end
     end
 end
 
