@@ -1,3 +1,5 @@
+local Players = game:GetService("Players")
+
 local Cooldown = {}
 Cooldown.__index = Cooldown
 
@@ -29,7 +31,15 @@ function Cooldown.create(self: CooldownModel): CooldownModel
     scheduleCooldownRemoval(self.userId, self.name, self.length, self.afterCooldown)
     return self
 end
-    
+
+function Cooldown.isCooldownActive(userId: number, name: string)
+    local userCooldowns = Cooldown.playerCooldowns[userId]
+    if userCooldowns and userCooldowns[name] then
+        return true
+    end
+    return false   
+end
+
 --[[
     Could only be done before creating the cooldown 
     @author Reshwan
@@ -41,14 +51,29 @@ end
 
 function scheduleCooldownRemoval(userId: number, name: string, cooldownInSeconds: number, afterCooldown)
     task.delay(cooldownInSeconds, function()
-        if Cooldown.playerCooldowns[userId] then
-            if Cooldown.playerCooldowns[userId][name] then
-                Cooldown.playerCooldowns[userId][name] = nil
-                if afterCooldown ~= nil then afterCooldown() end
-                print("Removing", Cooldown.playerCooldowns)
-            end
-        end
+        removeCooldown(userId, name, afterCooldown)
     end)
 end
+
+function removeCooldown(userId: number, name: string, callback: () -> any)
+    local userCooldowns = Cooldown.playerCooldowns[userId]
+    if not userCooldowns then return end
+    
+    if userCooldowns[name] then
+        userCooldowns[name] = nil
+        if callback ~= nil then callback() end
+    end
+end
+
+function removeAllPlayerCooldowns(userId: number)
+    local userCooldowns = Cooldown.playerCooldowns[userId]
+    if not userCooldowns then return end
+
+    Cooldown.playerCooldowns[userId] = nil
+end
+
+Players.PlayerRemoving:Connect(function(player)
+    removeAllPlayerCooldowns(player.UserId)
+end)
 
 return Cooldown
