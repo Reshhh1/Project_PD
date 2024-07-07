@@ -9,7 +9,7 @@ Hitbox.__index = Hitbox
 
 export type HitboxModesl = typeof(setmetatable(Hitbox.new(), Hitbox))
 
-function Hitbox.new(): HitboxMoxdel
+function Hitbox.new(): HitboxModel
     local self = setmetatable({
         cframe = CFrame.new(0,10,0),
         size = Vector3.new(0,0,0),
