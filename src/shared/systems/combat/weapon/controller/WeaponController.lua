@@ -10,7 +10,12 @@ local LocalPlayer = Players.LocalPlayer
 local WeaponController = {}
 WeaponController.__index = WeaponController
 
-export type CombatController = typeof(setmetatable(WeaponController.new(), WeaponController))
+export type CombatController = typeof(setmetatable({} :: {
+	tool: Tool,
+	debounce: boolean,
+	equipped: boolean,
+	connections: table
+}, WeaponController))
 
 function WeaponController.new(tool: Tool): CombatController
 	local self = setmetatable({

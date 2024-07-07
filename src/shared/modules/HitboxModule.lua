@@ -4,10 +4,18 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local WeldModule = require(ReplicatedStorage.Core.utility.module.WeldModule)
 local Constants = require(ReplicatedStorage.Core.utility.Constants)
 
+
 local Hitbox = {}
 Hitbox.__index = Hitbox
 
-export type HitboxModel = typeof(setmetatable(Hitbox.new(), Hitbox))
+export type HitboxModel = typeof(setmetatable({} :: {
+    cframe: CFrame,
+    size: Vector3,
+    overlapParams: OverlapParams | nil,
+    isVisible: boolean,
+    weldRoot: Part,
+    hitboxPart: Part
+}, Hitbox))
 
 function Hitbox.new(): HitboxModel
     local self = setmetatable({
@@ -22,7 +30,7 @@ function Hitbox.new(): HitboxModel
 end
 
 function Hitbox.setPosition(self: HitboxModel, cframe: CFrame): HitboxModel
-    self.cframe = cframe
+	self.cframe = cframe
     return self
 end
 
@@ -37,7 +45,7 @@ function Hitbox.makeVisible(self: HitboxModel): HitboxModel
 end
 
 function Hitbox.setWeldRoot(self: HitboxModel, weldRoot: Part): HitboxModel
-    self.weldRoot = weldRoot
+	self.weldRoot = weldRoot
     return self
 end
 
@@ -50,6 +58,7 @@ function Hitbox.getHitResults(self: HitboxModel): table
     if self.overlapParams == nil then
          warn("No overlapParams provided")
     end
+    
     local results = game.Workspace:GetPartsInPart(self.hitboxPart, self.overlapParams)
     local hits = {}
     for _, result in pairs(results) do
