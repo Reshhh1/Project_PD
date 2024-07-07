@@ -1,0 +1,10 @@
+{
+    "ClassName": "Folder",
+    "ignoreUnknownInstances": true,
+    "Children": [
+      {
+        "Name": "NormalAttack",
+        "ClassName": "RemoteFunction"
+      }
+    ]
+  }
