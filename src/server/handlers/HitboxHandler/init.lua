@@ -8,7 +8,7 @@ function HitboxHandler.handleCharactersInHitbox(origin: Part, enemyCharacter: Ch
     if isValidCharacter then
         local enemyRootPart = enemyCharacter:FindFirstChild("HumanoidRootPart")
         if enemyRootPart then
-            local inAllowedDistance = validateDistance(origin, enemyRootPart)
+            local inAllowedDistance = validateDistance(origin, enemyRootPart, 10) --HARD CODED FOR NOW
             if inAllowedDistance then
                 if onHit ~= nil then  onHit() end
             end
