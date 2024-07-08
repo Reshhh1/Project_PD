@@ -29,6 +29,6 @@ Remotes.NormalAttack.OnServerInvoke = function(player: Player, charactersInHitbo
 		end
 	end
 	CooldownModule
-		.new(player.UserId, "NormalAttack", 5)
+		.new(player.UserId, "NormalAttack", 0.5)
 		:create()
 end
