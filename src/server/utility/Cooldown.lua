@@ -1,4 +1,7 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
+
+local CooldownRemote = ReplicatedStorage.Core.systems.combat.weapon.isOnCooldown
 
 local Cooldown = {}
 Cooldown.__index = Cooldown
@@ -75,5 +78,11 @@ end
 Players.PlayerRemoving:Connect(function(player)
     removeAllPlayerCooldowns(player.UserId)
 end)
+
+local function requestData(player: Player, name: string): any
+    if typeof(name) ~= "string" then return false end
+    return Cooldown.isCooldownActive(player.UserId, name)
+end
+CooldownRemote.OnServerInvoke = requestData
 
 return Cooldown
