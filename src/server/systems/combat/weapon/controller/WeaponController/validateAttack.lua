@@ -2,12 +2,16 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local CooldownModule = require(ServerScriptService.Core.utility.Cooldown)
 
-local function validateAttack(player: Player)
+local function validateAttack(weapon: Tool, player: Player)
     local character = player.Character
     if not character then 
         return false
     end
 
+    if weapon.Parent ~= character then
+        return false
+    end
+    
     local humanoid = character:FindFirstChildOfClass("Humanoid")
     if not humanoid then 
         return false

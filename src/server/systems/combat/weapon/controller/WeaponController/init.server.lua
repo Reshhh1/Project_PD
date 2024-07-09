@@ -16,9 +16,9 @@ local function onHit(character: CharacterMesh)
     end
 end
 
-Remotes.NormalAttack.OnServerInvoke = function(player: Player, charactersInHitbox: { CharacterMesh }): any
-	if not validateArguments(charactersInHitbox) then return end
-	if not validateAttack(player) then return end
+Remotes.NormalAttack.OnServerInvoke = function(player: Player, weapon: Tool, charactersInHitbox: { CharacterMesh }): any
+	if not validateArguments(weapon, charactersInHitbox) then return end
+	if not validateAttack(weapon, player) then return end
 
 	local character = player.Character
 	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")

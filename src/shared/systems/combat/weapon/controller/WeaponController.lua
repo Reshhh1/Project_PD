@@ -66,7 +66,7 @@ function WeaponController._attack(self: CombatController, input: InputObject, ga
 	end
 	if input.UserInputType == Enum.UserInputType.MouseButton1 and not self.debounce then
 		self.debounce = true
-		normalAttackRequest()
+		normalAttackRequest(self.tool)
 		self.debounce = false
 	end
 end
@@ -87,14 +87,14 @@ function createHitbox(root: Part): HitboxModule.HitboxModel
 		:build()
 end
 
-function normalAttackRequest()
+function normalAttackRequest(tool: Tool)
 	local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-	local isOnCooldown = Remotes.Parent.isOnCooldown:InvokeServer(LocalPlayer.UserId, "NormalAttack")
+	local isOnCooldown = Remotes.isOnCooldown:InvokeServer(LocalPlayer.UserId, "NormalAttack")
 	if not isOnCooldown then
 		local hitbox = createHitbox(humanoidRootPart)
 		local result = hitbox:getHitResults()
-		local response = Remotes.NormalAttack:InvokeServer(result)
+		local response = Remotes.NormalAttack:InvokeServer(tool, result)
 		task.wait(0.5)
 	end
 end
