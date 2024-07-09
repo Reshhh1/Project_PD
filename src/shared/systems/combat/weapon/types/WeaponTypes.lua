@@ -3,8 +3,7 @@ local module = {}
 export type WeaponConfigType = {
     BASE_INFO: { ID: string, NAME: string },
     COMBAT: { 
-        NORMAL_ATTACK: WeaponMoveType ,
-        HEAVY_ATTACK: WeaponMoveType  
+        [string]: WeaponMoveType
     }
 }
 
