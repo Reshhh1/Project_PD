@@ -1,16 +1,24 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local SoundService = game:GetService("SoundService")
 local UserInputService = game:GetService("UserInputService")
 
 local HitboxModule = require(ReplicatedStorage.Core.modules.HitboxModule)
 
-local Remotes = ReplicatedStorage.Core.systems.combat.weapon.remotes
+local CooldownRemote = ReplicatedStorage.Core.remotes.isOnCooldown
+local WeaponRemotes = ReplicatedStorage.Core.systems.combat.weapon.remotes
+
 local LocalPlayer = Players.LocalPlayer
 
 local WeaponController = {}
 WeaponController.__index = WeaponController
 
-export type CombatController = typeof(setmetatable(WeaponController.new(), WeaponController))
+export type CombatController = typeof(setmetatable({} :: {
+	tool: Tool,
+	debounce: boolean,
+	equipped: boolean,
+	connections: table
+}, WeaponController))
 
 function WeaponController.new(tool: Tool): CombatController
 	local self = setmetatable({
@@ -59,14 +67,8 @@ function WeaponController._attack(self: CombatController, input: InputObject, ga
 		return
 	end
 	if input.UserInputType == Enum.UserInputType.MouseButton1 and not self.debounce then
-		local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-		local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-		if humanoidRootPart then
-			self.debounce = true
-			local hitbox = createHitbox(humanoidRootPart)
-			normalAttackRequest(hitbox)
-		end
-		task.wait(0.6)
+		self.debounce = true
+		normalAttackRequest(self.tool)
 		self.debounce = false
 	end
 end
@@ -87,9 +89,16 @@ function createHitbox(root: Part): HitboxModule.HitboxModel
 		:build()
 end
 
-function normalAttackRequest(hitbox: HitboxModule.HitboxModel)
-	local result = hitbox:getHitResults()
-	local response = Remotes.NormalAttack:InvokeServer(result)
+function normalAttackRequest(tool: Tool)
+	local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+	local isOnCooldown = CooldownRemote:InvokeServer(LocalPlayer.UserId, "NormalAttack")
+	if not isOnCooldown then
+		local hitbox = createHitbox(humanoidRootPart)
+		local result = hitbox:getHitResults()
+		local response = WeaponRemotes.NormalAttack:InvokeServer(tool, result)
+		task.wait(0.5)
+	end
 end
 
 return WeaponController
