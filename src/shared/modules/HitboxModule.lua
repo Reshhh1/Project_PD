@@ -1,7 +1,7 @@
 local Debris = game:GetService("Debris")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local WeldModule = require(ReplicatedStorage.Core.utility.module.WeldModule)
+local WeldModule = require(ReplicatedStorage.Core.utility.WeldModule)
 local Constants = require(ReplicatedStorage.Core.utility.Constants)
 
 
