@@ -1,5 +1,6 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local SoundService = game:GetService("SoundService")
 local UserInputService = game:GetService("UserInputService")
 
 local HitboxModule = require(ReplicatedStorage.Core.modules.HitboxModule)
@@ -66,8 +67,6 @@ function WeaponController._attack(self: CombatController, input: InputObject, ga
 	if input.UserInputType == Enum.UserInputType.MouseButton1 and not self.debounce then
 		self.debounce = true
 		normalAttackRequest()
-
-		task.wait(0.6)
 		self.debounce = false
 	end
 end
@@ -96,6 +95,7 @@ function normalAttackRequest()
 		local hitbox = createHitbox(humanoidRootPart)
 		local result = hitbox:getHitResults()
 		local response = Remotes.NormalAttack:InvokeServer(result)
+		task.wait(0.5)
 	end
 end
 
