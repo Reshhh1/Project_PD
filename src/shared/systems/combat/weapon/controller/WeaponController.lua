@@ -5,7 +5,9 @@ local UserInputService = game:GetService("UserInputService")
 
 local HitboxModule = require(ReplicatedStorage.Core.modules.HitboxModule)
 
-local Remotes = ReplicatedStorage.Core.systems.combat.weapon.remotes
+local CooldownRemote = ReplicatedStorage.Core.remotes.isOnCooldown
+local WeaponRemotes = ReplicatedStorage.Core.systems.combat.weapon.remotes
+
 local LocalPlayer = Players.LocalPlayer
 
 local WeaponController = {}
@@ -90,11 +92,11 @@ end
 function normalAttackRequest(tool: Tool)
 	local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-	local isOnCooldown = Remotes.isOnCooldown:InvokeServer(LocalPlayer.UserId, "NormalAttack")
+	local isOnCooldown = CooldownRemote:InvokeServer(LocalPlayer.UserId, "NormalAttack")
 	if not isOnCooldown then
 		local hitbox = createHitbox(humanoidRootPart)
 		local result = hitbox:getHitResults()
-		local response = Remotes.NormalAttack:InvokeServer(tool, result)
+		local response = WeaponRemotes.NormalAttack:InvokeServer(tool, result)
 		task.wait(0.5)
 	end
 end

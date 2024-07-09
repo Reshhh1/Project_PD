@@ -3,7 +3,7 @@ local function validateInstance(instance: Instance, expectedClass: string)
 		return false
 	end
 
-    return instance:IsA(expectedClass)
+	return instance:IsA(expectedClass)
 end
 
 return validateInstance

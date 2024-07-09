@@ -1,7 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
-local CooldownRemote = ReplicatedStorage.Core.systems.combat.weapon.isOnCooldown
+local CooldownRemote = ReplicatedStorage.Core.remotes.isOnCooldown
 
 local Cooldown = {}
 Cooldown.__index = Cooldown
@@ -68,21 +68,22 @@ function removeCooldown(userId: number, name: string, callback: () -> any)
     end
 end
 
-function removeAllPlayerCooldowns(userId: number)
+local function removeAllPlayerCooldowns(userId: number)
     local userCooldowns = Cooldown.playerCooldowns[userId]
     if not userCooldowns then return end
 
     Cooldown.playerCooldowns[userId] = nil
 end
 
-Players.PlayerRemoving:Connect(function(player)
-    removeAllPlayerCooldowns(player.UserId)
-end)
-
 local function requestData(player: Player, name: string): any
     if typeof(name) ~= "string" then return false end
     return Cooldown.isCooldownActive(player.UserId, name)
 end
+
+Players.PlayerRemoving:Connect(function(player)
+    removeAllPlayerCooldowns(player.UserId)
+end)
+
 CooldownRemote.OnServerInvoke = requestData
 
 return Cooldown
