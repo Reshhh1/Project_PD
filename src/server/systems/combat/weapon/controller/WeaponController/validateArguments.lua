@@ -2,7 +2,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local validateInstance = require(ServerScriptService.Core.utility.typevalidation.validateInstance)
 
-local function validateArguments(weapon: Tool, charactersInHitbox: { CharacterMesh }): boolean
+local function validateArguments(weapon: Tool, action: string, charactersInHitbox: { CharacterMesh }): boolean
     if typeof(charactersInHitbox) ~= "table" then
         return false
     end
@@ -10,6 +10,11 @@ local function validateArguments(weapon: Tool, charactersInHitbox: { CharacterMe
     if not validateInstance(weapon, "Tool") then
         return false
     end
+
+    if typeof(action) ~= "string" then
+        return false    
+    end
+
     return true
 end
 

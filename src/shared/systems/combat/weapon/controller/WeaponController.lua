@@ -1,9 +1,11 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local SoundService = game:GetService("SoundService")
 local UserInputService = game:GetService("UserInputService")
 
+local WeaponConfigHandler = require(ReplicatedStorage.Core.systems.combat.weapon.handlers.WeaponConfigHandler)
 local HitboxModule = require(ReplicatedStorage.Core.modules.HitboxModule)
+
+local WeaponTypes = require(ReplicatedStorage.Core.systems.combat.weapon.types.WeaponTypes)
 
 local CooldownRemote = ReplicatedStorage.Core.remotes.isOnCooldown
 local WeaponRemotes = ReplicatedStorage.Core.systems.combat.weapon.remotes
@@ -15,6 +17,7 @@ WeaponController.__index = WeaponController
 
 export type CombatController = typeof(setmetatable({} :: {
 	tool: Tool,
+	config: WeaponTypes.WeaponConfigType,
 	debounce: boolean,
 	equipped: boolean,
 	connections: table
@@ -23,9 +26,10 @@ export type CombatController = typeof(setmetatable({} :: {
 function WeaponController.new(tool: Tool): CombatController
 	local self = setmetatable({
 		tool = tool,
+		config = WeaponConfigHandler.getConfigByWeaponName(tool.Name),
 		debounce = false,
 		equipped = false,
-		connections = {},
+		connections = {}
 	}, WeaponController)
 	self:init()
 	return self
@@ -68,36 +72,36 @@ function WeaponController._attack(self: CombatController, input: InputObject, ga
 	end
 	if input.UserInputType == Enum.UserInputType.MouseButton1 and not self.debounce then
 		self.debounce = true
-		normalAttackRequest(self.tool)
+		normalAttackRequest(self.tool, self.config)
 		self.debounce = false
 	end
 end
 
 function WeaponController._heavyAttack() end
 
-function createHitbox(root: Part): HitboxModule.HitboxModel
+function createHitbox(root: Part, config: WeaponTypes.WeaponConfigType): HitboxModule.HitboxModel
 	local overlapParams = OverlapParams.new()
 	overlapParams.FilterType = Enum.RaycastFilterType.Exclude
 	overlapParams.FilterDescendantsInstances = { root.Parent }
 
 	return HitboxModule.new()
-		:setSize(Vector3.new(6, 6, 6))
-		:setPosition(root.CFrame * CFrame.new(0,0,-3))
+		:setSize(config.COMBAT.NORMAL_ATTACK.HITBOX_SIZE)
+		:setPosition(root.CFrame * config.COMBAT.NORMAL_ATTACK.HITBOX_OFFSET)
 		:makeVisible()
 		:setWeldRoot(root)
 		:setOverlapParams(overlapParams)
 		:build()
 end
 
-function normalAttackRequest(tool: Tool)
+function normalAttackRequest(tool: Tool, config: WeaponTypes.WeaponConfigType)
 	local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
 	local isOnCooldown = CooldownRemote:InvokeServer(LocalPlayer.UserId, "NormalAttack")
 	if not isOnCooldown then
-		local hitbox = createHitbox(humanoidRootPart)
+		local hitbox = createHitbox(humanoidRootPart, config)
 		local result = hitbox:getHitResults()
-		local response = WeaponRemotes.NormalAttack:InvokeServer(tool, result)
-		task.wait(0.5)
+		local response = WeaponRemotes.WeaponAttack:InvokeServer(tool,config.COMBAT.NORMAL_ATTACK.NAME, result)
+		task.wait(config.COMBAT.NORMAL_ATTACK.COOLDOWNS)
 	end
 end
 
