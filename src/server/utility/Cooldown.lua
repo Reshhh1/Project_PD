@@ -75,7 +75,7 @@ local function removeAllPlayerCooldowns(userId: number)
     Cooldown.playerCooldowns[userId] = nil
 end
 
-local function requestData(player: Player, name: string): any
+local function getCooldownStatus(player: Player, name: string): any
     if typeof(name) ~= "string" then return false end
     return Cooldown.isCooldownActive(player.UserId, name)
 end
@@ -84,6 +84,6 @@ Players.PlayerRemoving:Connect(function(player)
     removeAllPlayerCooldowns(player.UserId)
 end)
 
-CooldownRemote.OnServerInvoke = requestData
+CooldownRemote.OnServerInvoke = getCooldownStatus
 
 return Cooldown
