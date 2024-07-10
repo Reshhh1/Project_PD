@@ -3,12 +3,42 @@
 registry = "test"
 
 [[package]]
+name = "red-blox/bin"
+version = "1.0.0"
+dependencies = [["Spawn", "red-blox/spawn@1.1.0"]]
+
+[[package]]
+name = "red-blox/clock"
+version = "1.0.0"
+dependencies = []
+
+[[package]]
+name = "red-blox/collection"
+version = "1.0.0"
+dependencies = [["Spawn", "red-blox/spawn@1.1.0"]]
+
+[[package]]
+name = "red-blox/fetch"
+version = "2.0.0"
+dependencies = [["Future", "red-blox/future@1.0.1"]]
+
+[[package]]
 name = "red-blox/future"
 version = "1.0.1"
 dependencies = [["Spawn", "red-blox/spawn@1.1.0"]]
 
 [[package]]
 name = "red-blox/guard"
+version = "1.0.1"
+dependencies = []
+
+[[package]]
+name = "red-blox/promise"
+version = "1.1.1"
+dependencies = [["Spawn", "red-blox/spawn@1.1.0"]]
+
+[[package]]
+name = "red-blox/ratelimit"
 version = "1.0.1"
 dependencies = []
 
@@ -30,4 +60,4 @@ dependencies = []
 [[package]]
 name = "reshw/progressive-development"
 version = "0.1.0"
-dependencies = [["Red", "red-blox/red@2.3.2"]]
+dependencies = [["Bin", "red-blox/bin@1.0.0"], ["Clock", "red-blox/clock@1.0.0"], ["Collection", "red-blox/collection@1.0.0"], ["Fetch", "red-blox/fetch@2.0.0"], ["Future", "red-blox/future@1.0.1"], ["Guard", "red-blox/guard@1.0.1"], ["Promise", "red-blox/promise@1.1.1"], ["Ratelimit", "red-blox/ratelimit@1.0.1"], ["Red", "red-blox/red@2.3.2"], ["Signal", "red-blox/signal@2.0.2"], ["Spawn", "red-blox/spawn@1.1.0"]]
