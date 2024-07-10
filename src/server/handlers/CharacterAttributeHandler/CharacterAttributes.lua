@@ -1,0 +1,3 @@
+return {
+    comboCount = 0
+}
