@@ -1,6 +1,6 @@
 {
   "name": "fetch",
   "tree": {
-    "$path": "Fetch.luau"
+    "$path": "Fetch.lua"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "bin",
   "tree": {
-    "$path": "Bin.luau"
+    "$path": "Bin.lua"
   }
 }

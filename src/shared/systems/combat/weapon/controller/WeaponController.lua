@@ -4,6 +4,8 @@ local UserInputService = game:GetService("UserInputService")
 
 local WeaponConfigHandler = require(ReplicatedStorage.Core.systems.combat.weapon.handlers.WeaponConfigHandler)
 local HitboxModule = require(ReplicatedStorage.Core.modules.HitboxModule)
+local Guard = require(ReplicatedStorage.packages.Guard)
+local Red = require(ReplicatedStorage.packages.Red)
 
 local WeaponTypes = require(ReplicatedStorage.Core.systems.combat.weapon.types.WeaponTypes)
 

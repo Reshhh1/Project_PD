@@ -1,6 +1,6 @@
 {
   "name": "promise",
   "tree": {
-    "$path": "Promise.luau"
+    "$path": "Promise.lua"
   }
 }
