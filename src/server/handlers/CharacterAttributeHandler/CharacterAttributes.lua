@@ -1,3 +1,3 @@
 return {
-    comboCount = 0
+    ComboCount = 1
 }
