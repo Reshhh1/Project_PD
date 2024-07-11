@@ -2,7 +2,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local CooldownModule = require(ServerScriptService.Core.utility.Cooldown)
 
-local function validateAttack(weapon: Tool, player: Player)
+local function validateAttack(weapon: Tool, player: Player, action: string)
     local character = player.Character
     if not character then 
         return false
@@ -20,8 +20,7 @@ local function validateAttack(weapon: Tool, player: Player)
         return false 
     end
 
-    local isOnCooldown = CooldownModule.isCooldownActive(player.UserId, "NormalAttack")
-    if isOnCooldown then
+    if CooldownModule.isCooldownActive(player.UserId, action) then
         return false
     end
     return true
