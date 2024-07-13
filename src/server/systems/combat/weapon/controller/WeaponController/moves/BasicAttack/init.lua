@@ -5,6 +5,8 @@ local ComboModule = require(ServerScriptService.Core.systems.combat.modules.Comb
 local HitboxHandler = require(ServerScriptService.Core.handlers.HitboxHandler)
 local CooldownModule = require(ServerScriptService.Core.utility.Cooldown)
 
+local validateArguments = require(script.validateArguments)
+
 local WeaponTypes = require(ReplicatedStorage.Core.systems.combat.weapon.types.WeaponTypes)
 
 local BasicAttack = {}
@@ -12,7 +14,9 @@ local BasicAttack = {}
 -- Being used in the initilization of skills
 BasicAttack.MoveName = "Basic attack"
 
-function BasicAttack.init(player: Player, charactersInHitbox, config: WeaponTypes.WeaponMoveType)
+function BasicAttack.init(player: Player, config: WeaponTypes.WeaponMoveType, args: any)
+    if not validateArguments(args) then return end
+    local charactersInHitbox = args.charactersInHitbox
     local character = player.Character
 	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
     local comboCount = ComboModule.get(character)

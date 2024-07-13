@@ -16,13 +16,16 @@ local LocalPlayer = Players.LocalPlayer
 local WeaponController = {}
 WeaponController.__index = WeaponController
 
-export type CombatController = typeof(setmetatable({} :: {
-	tool: Tool,
-	config: WeaponTypes.WeaponConfigType,
-	debounce: boolean,
-	equipped: boolean,
-	connections: table
-}, WeaponController))
+export type CombatController = typeof(setmetatable(
+	{} :: {
+		tool: Tool,
+		config: WeaponTypes.WeaponConfigType,
+		debounce: boolean,
+		equipped: boolean,
+		connections: table,
+	},
+	WeaponController
+))
 
 function WeaponController.new(tool: Tool): CombatController
 	local self = setmetatable({
@@ -30,7 +33,7 @@ function WeaponController.new(tool: Tool): CombatController
 		config = WeaponConfigHandler.getConfigByWeaponName(tool.Name),
 		debounce = false,
 		equipped = false,
-		connections = {}
+		connections = {},
 	}, WeaponController)
 	self:init()
 	return self
@@ -71,6 +74,7 @@ function WeaponController._attack(self: CombatController, input: InputObject, ga
 	if gameProcessedEvent or not self.equipped then
 		return
 	end
+
 	if input.UserInputType == Enum.UserInputType.MouseButton1 and not self.debounce then
 		self.debounce = true
 		normalAttackRequest(self.tool, self.config)
@@ -102,7 +106,8 @@ function normalAttackRequest(tool: Tool, config: WeaponTypes.WeaponConfigType)
 	if not isOnCooldown then
 		local hitbox = createHitbox(humanoidRootPart, config)
 		local result = hitbox:getHitResults()
-		local response = WeaponRemotes.WeaponAttack:InvokeServer(tool,config.COMBAT.NORMAL_ATTACK.NAME, result)
+		local response =
+			WeaponRemotes.WeaponAttack:InvokeServer({ weapon = tool, action = config.COMBAT.NORMAL_ATTACK.NAME }, { charactersInHitbox = result})
 		task.wait(config.COMBAT.NORMAL_ATTACK.COOLDOWNS[comboCount])
 	end
 end

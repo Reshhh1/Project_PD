@@ -1,17 +1,20 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
+
+local WeaponTypes = require(ReplicatedStorage.Core.systems.combat.weapon.types.WeaponTypes)
 
 local validateInstance = require(ServerScriptService.Core.utility.typevalidation.validateInstance)
 
-local function validateArguments(weapon: Tool, action: string, charactersInHitbox: { Model }): boolean
-    if typeof(charactersInHitbox) ~= "table" then
-        return false
-    end
-    
-    if not validateInstance(weapon, "Tool") then
+local function validateArguments(weaponAction: WeaponTypes.WeaponAction, args: table): boolean
+    if typeof(args) ~= "table" then
         return false
     end
 
-    if typeof(action) ~= "string" then
+    if not validateInstance(weaponAction.weapon, "Tool") then
+        return false
+    end
+
+    if typeof(weaponAction.action) ~= "string" then
         return false    
     end
 
