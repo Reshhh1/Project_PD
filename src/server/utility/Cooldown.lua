@@ -76,7 +76,7 @@ local function removeAllPlayerCooldowns(userId: number)
 end
 
 local function getCooldownStatus(player: Player, name: string): any
-    if typeof(name) ~= "string" then return false end
+    if typeof(name) ~= "string" then return end
     return Cooldown.isCooldownActive(player.UserId, name)
 end
 
