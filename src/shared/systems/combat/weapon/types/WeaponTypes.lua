@@ -7,6 +7,6 @@ export type WeaponConfigType = {
     }
 }
 
-export type WeaponMoveType = {NAME: string, BASE_DAMAGE: number, COOLDOWNS: number, HITBOX_SIZE: Vector3, HITBOX_OFFSET: CFrame }
+export type WeaponMoveType = {NAME: string, BASE_DAMAGE: table, COOLDOWNS: table, HITBOX_SIZE: Vector3, HITBOX_OFFSET: CFrame }
 
 return module

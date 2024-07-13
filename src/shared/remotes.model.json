@@ -5,6 +5,10 @@
       {
         "Name": "isOnCooldown",    
         "ClassName": "RemoteFunction"
+      },
+      {
+        "Name": "getComboCount",    
+        "ClassName": "RemoteFunction"
       }
     ]
   }
