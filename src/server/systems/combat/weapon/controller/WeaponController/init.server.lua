@@ -4,24 +4,32 @@ local WeaponConfigHandler = require(ReplicatedStorage.Core.systems.combat.weapon
 local validateArguments = require(script.validation.validateArguments)
 local validateAttack = require(script.validation.validateAttack)
 
+local WeaponTypes = require(ReplicatedStorage.Core.systems.combat.weapon.types.WeaponTypes)
+
 local Remotes = ReplicatedStorage.Core.systems.combat.weapon.remotes
 
-local function initilizeSkill(player: Player, action: string, charactersInHitbox: { Model }, config)
-	for _, module in pairs(script.moves:GetChildren()) do
-		if not module:IsA("ModuleScript") then return end
-		module = require(module)
-		if module.MoveName and module.MoveName == action and module.init then
-			module.init(player, charactersInHitbox, config)
-		end
+local MovesModules = {}
+for _, module in pairs(script.moves:GetChildren()) do
+	if not module:IsA("ModuleScript") then continue end
+	local requiredModule = require(module)
+	if requiredModule.MoveName then
+		MovesModules[requiredModule.MoveName] = requiredModule
 	end
 end
 
-Remotes.WeaponAttack.OnServerInvoke = function(player: Player, weapon: Tool, action: string, charactersInHitbox: { Model }): any
-	if not validateArguments(weapon, action, charactersInHitbox) then return end
-	if not validateAttack(weapon, player, action) then return end
+local function initializeSkill(player: Player, action: string, config: WeaponTypes.WeaponMoveType, args: table)
+	local moveModule = MovesModules[action]
+	if moveModule and moveModule.init then
+		moveModule.init(player, config, args)
+	end
+end
+
+Remotes.WeaponAttack.OnServerInvoke = function(player: Player, weaponAction: WeaponTypes.WeaponAction, args: {}): any
+	if not validateArguments(weaponAction, args) then return end
+	if not validateAttack(weaponAction.weapon, player, weaponAction.action) then return end
 	
-	local config = WeaponConfigHandler.getCombatMoveConfig(weapon.Name, action)
+	local config = WeaponConfigHandler.getCombatMoveConfig(weaponAction.weapon.Name, weaponAction.action)
 	if not config then return end
 
-	initilizeSkill(player, action, charactersInHitbox, config)
+	initializeSkill(player, weaponAction.action, config, args)
 end
