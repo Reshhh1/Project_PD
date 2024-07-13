@@ -98,7 +98,7 @@ function normalAttackRequest(tool: Tool, config: WeaponTypes.WeaponConfigType)
 	local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
 	local isOnCooldown = CooldownRemote:InvokeServer("Basic attack")
-	local comboCount = character:GetAttribute("ComboCount")
+	local comboCount = ComboCountRemote:InvokeServer(#config.COMBAT.NORMAL_ATTACK.COOLDOWNS)
 	if not isOnCooldown then
 		local hitbox = createHitbox(humanoidRootPart, config)
 		local result = hitbox:getHitResults()
