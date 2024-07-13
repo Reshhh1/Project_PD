@@ -1,3 +1,4 @@
 return {
-    ComboCount = 1
+    ComboCount = 1,
+    LastAttack = nil
 }
