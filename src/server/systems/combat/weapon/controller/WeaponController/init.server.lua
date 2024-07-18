@@ -1,6 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local WeaponConfigHandler = require(ReplicatedStorage.Core.systems.combat.weapon.handlers.WeaponConfigHandler)
+local CacheModule = require(ReplicatedStorage.Core.utility.CacheModule)
 local validateArguments = require(script.validation.validateArguments)
 local validateAttack = require(script.validation.validateAttack)
 
@@ -8,19 +9,14 @@ local WeaponTypes = require(ReplicatedStorage.Core.systems.combat.weapon.types.W
 
 local Remotes = ReplicatedStorage.Core.systems.combat.weapon.remotes
 
-local MovesModules = {}
-for _, module in pairs(script.moves:GetChildren()) do
-	if not module:IsA("ModuleScript") then continue end
-	local requiredModule = require(module)
-	if requiredModule.MoveName then
-		MovesModules[requiredModule.MoveName] = requiredModule
-	end
-end
+local MovesModules = CacheModule.loadModules(script.moves, "MoveName")
 
 local function initializeSkill(player: Player, action: string, config: WeaponTypes.WeaponMoveType, args: table)
 	local moveModule = MovesModules[action]
 	if moveModule and moveModule.init then
 		moveModule.init(player, config, args)
+	else
+		warn(`Action: {action}. Doesn't exists`)
 	end
 end
 
