@@ -1,0 +1,41 @@
+{
+    "ClassName": "Folder",
+    "ignoreUnknownInstances": true,
+    "Children": [
+      {
+        "Name": "Attack_1",
+        "ClassName": "Animation",
+        "Properties": {
+          "AnimationId": "rbxassetid://18536667384"
+        }
+      },
+      {
+        "Name": "Attack_2",
+        "ClassName": "Animation",
+        "Properties": {
+          "AnimationId": "rbxassetid://18536754280"
+        }
+      },
+      {
+        "Name": "Attack_3",
+        "ClassName": "Animation",
+        "Properties": {
+          "AnimationId": "rbxassetid://18536667384"
+        }
+      },
+      {
+        "Name": "Attack_4",
+        "ClassName": "Animation",
+        "Properties": {
+          "AnimationId": "rbxassetid://18536680562"
+        }
+      }
+      ,      {
+        "Name": "Attack_5",
+        "ClassName": "Animation",
+        "Properties": {
+          "AnimationId": "rbxassetid://18536659798"
+        }
+      }
+    ]
+  }
