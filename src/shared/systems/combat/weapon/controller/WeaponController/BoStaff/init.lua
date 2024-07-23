@@ -9,6 +9,7 @@ local ComboCountRemote = ReplicatedStorage.Core.remotes.getComboCount
 local WeaponRemotes = ReplicatedStorage.Core.systems.combat.weapon.remotes
 
 local LocalPlayer = Players.LocalPlayer
+local Animations = script.animations
 
 local BoStaff = {}
 BoStaff.__index = BoStaff
@@ -48,7 +49,6 @@ function normalAttack(self, input: InputObject, gameProcessedEvent: boolean)
 	end
 
 	if input.UserInputType == Enum.UserInputType.MouseButton1 and not self.debounce then
-        print(self)
 		self.debounce = true
 		normalAttackRequest(self.tool, self.config)
 		self.debounce = false
@@ -75,6 +75,14 @@ function normalAttackRequest(tool: Tool, config)
 	local isOnCooldown = CooldownRemote:InvokeServer("Basic attack")
 	local comboCount = ComboCountRemote:InvokeServer()
 	if not isOnCooldown then
+		print(comboCount)
+		print("REAL: ", character:GetAttribute("ComboCount"))
+		local humanoid = character:FindFirstChild("Humanoid") :: Humanoid
+		local animator = humanoid:FindFirstChild("Animator") :: Animator
+
+		local animation = Animations[`Attack_{comboCount}`]:Clone()
+		local animationTrack = animator:LoadAnimation(animation)
+		animationTrack:Play()
 		local hitbox = createHitbox(humanoidRootPart, config)
 		local result = hitbox:getHitResults()
 		local response =

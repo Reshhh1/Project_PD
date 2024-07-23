@@ -20,7 +20,13 @@ function BasicAttack.init(player: Player, config: WeaponTypes.WeaponMoveType, ar
     local character = player.Character
 	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
     local comboCount = ComboModule.get(character)
-    
+    print(args)
+    -- local weld = Instance.new("Motor6D")
+	-- 	weld.Part0 = character:FindFirstChild("Right Arm")
+	-- 	weld.Part1 =  args.weapon:FindFirstChild("Handle")
+	-- 	weld.C0 = CFrame.new(0,-1,0) * CFrame.Angles(math.rad(-90),0,0)
+	-- 	weld.Parent = character:FindFirstChild("Right Arm")
+        
 	if humanoidRootPart then
 		for _, targetCharacter in pairs(charactersInHitbox) do
 			HitboxHandler.handleCharactersInHitbox(humanoidRootPart, targetCharacter, function()  onHit(targetCharacter, config.BASE_DAMAGE[comboCount]) end)
