@@ -1,6 +1,6 @@
 local CacheModule = {}
 
-function CacheModule.loadModules(pathToModules: any, requiredProperty)
+function CacheModule.loadModulesByPropertyName(pathToModules: any, requiredProperty)
     local modules = {}
     for _, module: ModuleScript in pairs(pathToModules:GetChildren()) do
         if not module:IsA("ModuleScript") then continue end

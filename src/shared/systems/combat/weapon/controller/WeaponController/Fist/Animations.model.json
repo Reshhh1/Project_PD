@@ -6,35 +6,35 @@
         "Name": "Attack_1",
         "ClassName": "Animation",
         "Properties": {
-          "AnimationId": "rbxassetid://18561776772"
+          "AnimationId": "rbxassetid://84441100640429"
         }
       },
       {
         "Name": "Attack_2",
         "ClassName": "Animation",
         "Properties": {
-          "AnimationId": "rbxassetid://18536754280"
+          "AnimationId": "rbxassetid://75096290983055"
         }
       },
       {
         "Name": "Attack_3",
         "ClassName": "Animation",
         "Properties": {
-          "AnimationId": "rbxassetid://18536667384"
+          "AnimationId": "rbxassetid://84441100640429"
         }
       },
       {
         "Name": "Attack_4",
         "ClassName": "Animation",
         "Properties": {
-          "AnimationId": "rbxassetid://18536680562"
+          "AnimationId": "rbxassetid://75096290983055"
         }
       }
       ,      {
         "Name": "Attack_5",
         "ClassName": "Animation",
         "Properties": {
-          "AnimationId": "rbxassetid://18536659798"
+          "AnimationId": "rbxassetid://84441100640429"
         }
       }
     ]

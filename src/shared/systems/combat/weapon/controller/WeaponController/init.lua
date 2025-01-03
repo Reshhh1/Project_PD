@@ -3,7 +3,7 @@ local UserInputService = game:GetService("UserInputService")
 
 local CacheModule = require(ReplicatedStorage.Core.utility.CacheModule)
 
-local WeaponModules = CacheModule.loadModules(script, "WeaponName")
+local WeaponModules = CacheModule.loadModulesByPropertyName(script, "WeaponName")
 
 local WeaponController = {}
 WeaponController.__index = WeaponController
@@ -42,14 +42,5 @@ end
 function WeaponController._addConnection(self: CombatController, connection: RBXScriptConnection)
 	table.insert(self.connections, connection)
 end
-
--- function WeaponController.destroy(self: CombatController)
--- 	self:_unEquip()
--- 	for _, connection: RBXScriptConnection in pairs(self.connections) do
--- 		connection:Disconnect()
--- 	end
--- end
-
-function WeaponController._heavyAttack() end
 
 return WeaponController

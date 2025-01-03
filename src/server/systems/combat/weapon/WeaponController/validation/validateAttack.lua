@@ -19,7 +19,8 @@ local function validateAttack(weapon: Tool, player: Player, action: string)
     if humanoid.Health < 0 then 
         return false 
     end
-
+   
+    
     if CooldownModule.isCooldownActive(player.UserId, action) then
         return false
     end

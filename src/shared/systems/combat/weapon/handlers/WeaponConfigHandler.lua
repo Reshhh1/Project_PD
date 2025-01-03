@@ -1,14 +1,14 @@
 local WeaponType = require(script.Parent.Parent.types.WeaponTypes)
 
-local WeaponConfigs = script.Parent.Parent.configs
+local WeaponController = script.Parent.Parent.controller.WeaponController
 
 local WeaponConfigHandler = {}
 
 function WeaponConfigHandler.getConfigByWeaponName(name: string)
-    for _, module in pairs(WeaponConfigs:GetChildren()) do
+    for _, module in pairs(WeaponController:GetChildren()) do
         if not module:IsA("ModuleScript") then continue end
-        local weaponConfigs = require(module)
-        return getConfigByKey(name, weaponConfigs)
+        local weaponConfig = require(module.Config)
+        return weaponConfig
     end
     return nil
 end
