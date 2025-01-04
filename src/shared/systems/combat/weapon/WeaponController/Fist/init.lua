@@ -21,6 +21,7 @@ function FistController.new(tool: Tool)
         tool = tool,
         equipped = false,
         debounce = false,
+		skillDebounce = false,
 		equipTrack = nil :: AnimationTrack | nil
     }, FistController)
     return self
@@ -49,14 +50,27 @@ function FistController.handleUserInput(self, input: InputObject, gameProcessedE
 	if gameProcessedEvent or not self.equipped then
 		return
 	end
-    normalAttack(self, input)
+	handleWeaponMoves(self, input)
+	handleSpecialMoves(self, input)
 end
 
-function normalAttack(self, input: InputObject)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 and not self.debounce then
+function handleWeaponMoves(self, input: InputObject)
+		if input.UserInputType.Value == Enum.UserInputType.MouseButton1.Value and not self.debounce then
 		self.debounce = true
 		normalAttackRequest(self.tool)
 		self.debounce = false
+	end
+end
+
+function handleSpecialMoves(self, input: InputObject)
+	for _, move in pairs(self.tool.Moves:GetChildren()) do
+		if not move:IsA("StringValue") then continue end
+		if input.KeyCode.Name == move.Value and not self.skillDebounce then
+			self.skillDebounce = true
+			print("E")
+			WeaponRemotes.WeaponAttack:InvokeServer({ weapon = self.tool, action = move.Name, attackType = Config.BASIC_ATTACK.ATTACK_TYPE }, { charactersInHitbox = {}})
+			self.skillDebounce = false
+		end
 	end
 end
 
@@ -65,8 +79,8 @@ function createHitbox(root: Part): HitboxModule.HitboxModel
 	overlapParams.FilterType = Enum.RaycastFilterType.Exclude
 	overlapParams.FilterDescendantsInstances = { root.Parent }
 	return HitboxModule.new()
-		:setSize(Config.COMBAT.NORMAL_ATTACK.HITBOX_SIZE)
-		:setPosition(root.CFrame * Config.COMBAT.NORMAL_ATTACK.HITBOX_OFFSET)
+		:setSize(Config.BASIC_ATTACK.HITBOX_SIZE)
+		:setPosition(root.CFrame * Config.BASIC_ATTACK.HITBOX_OFFSET)
 		:setWeldRoot(root)
 		:setOverlapParams(overlapParams)
 		:build()
@@ -90,10 +104,10 @@ function normalAttackRequest(tool: Tool)
 		animationTrack:GetMarkerReachedSignal("impact"):Connect(function()
 			local clientHitbox = createHitbox(humanoidRootPart)
 			local result = clientHitbox:getHitResults()
-			WeaponRemotes.WeaponAttack:InvokeServer({ weapon = tool, action = Config.COMBAT.NORMAL_ATTACK.NAME }, { charactersInHitbox = result})
+			WeaponRemotes.WeaponAttack:InvokeServer({ weapon = tool, action = Config.BASIC_ATTACK.NAME, attackType = Config.BASIC_ATTACK.ATTACK_TYPE }, { charactersInHitbox = result})
 		end)
 		animationTrack.Stopped:Wait()
-		task.wait(0.1) --Hard coded cooldown to prevent remote spamming
+		task.wait(Config.BASIC_ATTACK.COOLDOWNS.client)
 	end
 end
 

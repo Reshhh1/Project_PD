@@ -1,36 +1,31 @@
-local WeaponType = require(script.Parent.Parent.types.WeaponTypes)
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local WeaponController = script.Parent.Parent.WeaponController
+local ModuleFinder = require(ReplicatedStorage.Core.utility.ModuleFinder)
+
+local WeaponContainer = script.Parent.Parent.WeaponController
+local SpecialMovesContainer = script.Parent.Parent.SpecialMoves
 
 local WeaponConfigHandler = {}
 
-function WeaponConfigHandler.getConfigByWeaponName(name: string)
-    for _, module in pairs(WeaponController:GetChildren()) do
-        if not module:IsA("ModuleScript") then continue end
-        if module.Name == name then
-            local weaponConfig = require(module.Config)
-            return weaponConfig
+function WeaponConfigHandler.getWeaponConfigByName(name: string)
+    return ModuleFinder.findModuleByName(name, WeaponContainer)
+end
+
+function WeaponConfigHandler.getDefaultWeaponMoveConfigByName(weaponName: string, moveName: string)
+    local config = ModuleFinder.findModuleByName(weaponName, WeaponContainer) or {}
+    if config then
+        for _, key in pairs(config) do
+            if not key.NAME then return end
+            if key.NAME == moveName then
+                return key
+            end
         end
     end
     return nil
 end
 
---[[
-    This method can only be used to get information of a move.
-    Things like normal attack, heavy attack ect.
-
-    @author Reshwan
---]]
-function WeaponConfigHandler.getCombatMoveConfig(weaponName: string, action: string): WeaponType.WeaponMoveType | nil
-    local toolConfig = WeaponConfigHandler.getConfigByWeaponName(weaponName)
-    if toolConfig then
-        for _, config in pairs(toolConfig.COMBAT) do
-            if config.NAME == action then
-                return config
-            end
-        end
-    end
-    return nil
+function WeaponConfigHandler.getSpecialWeaponMoveConfigByName(name: string)
+    return ModuleFinder.findModuleByName(name, SpecialMovesContainer)
 end
 
 return WeaponConfigHandler

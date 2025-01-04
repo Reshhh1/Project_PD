@@ -20,6 +20,11 @@ local function validateArguments(weaponAction: WeaponTypes.WeaponAction, args: {
         return false    
     end
 
+    if typeof(weaponAction.attackType) ~= "string" then
+        warn(`weaponAction.attackType isn't of type string`)
+        return false    
+    end
+
     return true
 end
 

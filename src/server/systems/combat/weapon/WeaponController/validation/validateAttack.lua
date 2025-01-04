@@ -20,7 +20,6 @@ local function validateAttack(weapon: Tool, player: Player, action: string)
         return false 
     end
    
-    
     if CooldownModule.isCooldownActive(player.UserId, action) then
         return false
     end

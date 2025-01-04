@@ -1,10 +1,7 @@
 return {
     BASE_INFO = {
-        NAME = "Fist",
-    },
-    BASIC_ATTACK = {
-        NAME = "Basic attack",
-        BASE_DAMAGE = { 5, 5, 5, 5, 10},
+        NAME = "Fire Fist",
+        BASE_DAMAGE = { 50, 50, 50, 50, 10},
         COOLDOWNS = {
             server = { 0.3, 0.3, 0.3, 0.3, 1.5 },
             client = 0.1

@@ -23,8 +23,8 @@ end
 Remotes.WeaponAttack.OnServerInvoke = function(player: Player, weaponAction: WeaponTypes.WeaponAction, args: {})
 	if not validateArguments(weaponAction, args) then return end
 	if not validateAttack(weaponAction.weapon, player, weaponAction.action) then return end
-	local config = WeaponConfigHandler.getCombatMoveConfig(weaponAction.weapon.Name, weaponAction.action)
-	if not config then return end
+	local config = WeaponConfigHandler.getDefaultWeaponMoveConfigByName(weaponAction.weapon.Name, weaponAction.action) or WeaponConfigHandler.getSpecialWeaponMoveConfigByName(weaponAction.action)
+	if not config then warn(`Configuration not found for: {weaponAction.action}`) end
 	args["weapon"] = weaponAction.weapon 
 	initializeSkill(player, weaponAction.action, config, args)
 end
