@@ -1,6 +1,6 @@
 local WeaponType = require(script.Parent.Parent.types.WeaponTypes)
 
-local WeaponController = script.Parent.Parent.controller.WeaponController
+local WeaponController = script.Parent.Parent.WeaponController
 
 local WeaponConfigHandler = {}
 
