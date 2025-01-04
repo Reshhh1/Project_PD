@@ -7,8 +7,10 @@ local WeaponConfigHandler = {}
 function WeaponConfigHandler.getConfigByWeaponName(name: string)
     for _, module in pairs(WeaponController:GetChildren()) do
         if not module:IsA("ModuleScript") then continue end
-        local weaponConfig = require(module.Config)
-        return weaponConfig
+        if module.Name == name then
+            local weaponConfig = require(module.Config)
+            return weaponConfig
+        end
     end
     return nil
 end
@@ -29,16 +31,6 @@ function WeaponConfigHandler.getCombatMoveConfig(weaponName: string, action: str
         end
     end
     return nil
-end
-
-function getConfigByKey(keyName: string, configs: any)
-    for _, itemConfig: WeaponType.WeaponConfigType in pairs(configs) do
-        local name = itemConfig.BASE_INFO.NAME
-        if not name then continue end
-        if name == keyName then 
-            return itemConfig
-        end
-    end
 end
 
 return WeaponConfigHandler

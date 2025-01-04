@@ -59,7 +59,6 @@ function createHitbox(root: Part): HitboxModule.HitboxModel
 	return HitboxModule.new()
 		:setSize(Config.COMBAT.NORMAL_ATTACK.HITBOX_SIZE)
 		:setPosition(root.CFrame * Config.COMBAT.NORMAL_ATTACK.HITBOX_OFFSET)
-		:makeVisible()
 		:setWeldRoot(root)
 		:setOverlapParams(overlapParams)
 		:build()
@@ -86,7 +85,7 @@ function normalAttackRequest(tool: Tool)
 			WeaponRemotes.WeaponAttack:InvokeServer({ weapon = tool, action = Config.COMBAT.NORMAL_ATTACK.NAME }, { charactersInHitbox = result})
 		end)
 		animationTrack.Stopped:Wait()
-		task.wait(Config.COMBAT.NORMAL_ATTACK.COOLDOWNS.client[comboCount])
+		task.wait(0.1) --Hard coded cooldown to prevent remote spamming
 	end
 end
 

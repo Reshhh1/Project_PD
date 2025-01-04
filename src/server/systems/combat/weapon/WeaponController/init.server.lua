@@ -11,7 +11,7 @@ local Remotes = ReplicatedStorage.Core.systems.combat.weapon.remotes
 
 local MovesModules = CacheModule.loadModulesByPropertyName(script.moves, "MoveName")
 
-local function initializeSkill(player: Player, action: string, config: WeaponTypes.WeaponMoveType, args: table)
+local function initializeSkill(player: Player, action: string, config: WeaponTypes.WeaponMoveType, args: {})
 	local moveModule = MovesModules[action]
 	if moveModule and moveModule.init then
 		moveModule.init(player, config, args)
@@ -20,7 +20,7 @@ local function initializeSkill(player: Player, action: string, config: WeaponTyp
 	end
 end
 
-Remotes.WeaponAttack.OnServerInvoke = function(player: Player, weaponAction: WeaponTypes.WeaponAction, args: table): any
+Remotes.WeaponAttack.OnServerInvoke = function(player: Player, weaponAction: WeaponTypes.WeaponAction, args: {})
 	if not validateArguments(weaponAction, args) then return end
 	if not validateAttack(weaponAction.weapon, player, weaponAction.action) then return end
 	local config = WeaponConfigHandler.getCombatMoveConfig(weaponAction.weapon.Name, weaponAction.action)

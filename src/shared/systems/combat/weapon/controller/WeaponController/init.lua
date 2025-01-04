@@ -11,7 +11,7 @@ WeaponController.__index = WeaponController
 export type CombatController = typeof(setmetatable(
 	{} :: {
 		tool: Tool,
-		connections: table,
+		connections: {} ,
 		controller: any
 	},
 	WeaponController
