@@ -5,8 +5,9 @@ local WeaponTypes = require(ReplicatedStorage.Core.systems.combat.weapon.types.W
 
 local validateInstance = require(ServerScriptService.Core.utility.typevalidation.validateInstance)
 
-local function validateArguments(weaponAction: WeaponTypes.WeaponAction, args: table): boolean
+local function validateArguments(weaponAction: WeaponTypes.WeaponAction, args: {}): boolean
     if typeof(args) ~= "table" then
+        warn(`{tostring(args)} isn't of type table`)
         return false
     end
 
@@ -15,6 +16,7 @@ local function validateArguments(weaponAction: WeaponTypes.WeaponAction, args: t
     end
 
     if typeof(weaponAction.action) ~= "string" then
+        warn(`weaponAction.action isn't of type string`)
         return false    
     end
 

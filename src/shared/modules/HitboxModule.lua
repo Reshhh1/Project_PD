@@ -54,7 +54,7 @@ function Hitbox.setOverlapParams(self: HitboxModel, overlapParam: OverlapParams)
     return self
 end
 
-function Hitbox.getHitResults(self: HitboxModel): table
+function Hitbox.getHitResults(self: HitboxModel): {}
     if self.overlapParams == nil then
          warn("No overlapParams provided")
     end

@@ -1,0 +1,48 @@
+{
+    "ClassName": "Folder",
+    "ignoreUnknownInstances": true,
+    "Children": [
+      {
+        "Name": "Equip",
+        "ClassName": "Animation",
+        "Properties": {
+          "AnimationId": "rbxassetid://132964776805074"
+        }
+      },
+      {
+        "Name": "Attack_1",
+        "ClassName": "Animation",
+        "Properties": {
+          "AnimationId": "rbxassetid://84441100640429"
+        }
+      },
+      {
+        "Name": "Attack_2",
+        "ClassName": "Animation",
+        "Properties": {
+          "AnimationId": "rbxassetid://75096290983055"
+        }
+      },
+      {
+        "Name": "Attack_3",
+        "ClassName": "Animation",
+        "Properties": {
+          "AnimationId": "rbxassetid://84441100640429"
+        }
+      },
+      {
+        "Name": "Attack_4",
+        "ClassName": "Animation",
+        "Properties": {
+          "AnimationId": "rbxassetid://75096290983055"
+        }
+      }
+      ,      {
+        "Name": "Attack_5",
+        "ClassName": "Animation",
+        "Properties": {
+          "AnimationId": "rbxassetid://84441100640429"
+        }
+      }
+    ]
+  }

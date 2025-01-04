@@ -22,7 +22,7 @@ function Cooldown.new(userId: number, action: string, cooldownInSeconds: number)
         length = cooldownInSeconds,
         afterCooldown = nil
     }, Cooldown)
-    
+    if cooldownInSeconds == nil then warn(`Cooldown is nil: {action}`) end
     return self
 end
 

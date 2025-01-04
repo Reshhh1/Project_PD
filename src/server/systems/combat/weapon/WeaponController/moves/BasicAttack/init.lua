@@ -20,14 +20,14 @@ function BasicAttack.init(player: Player, config: WeaponTypes.WeaponMoveType, ar
     local character = player.Character
 	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
     local comboCount = ComboModule.get(character)
-    
+        
 	if humanoidRootPart then
 		for _, targetCharacter in pairs(charactersInHitbox) do
 			HitboxHandler.handleCharactersInHitbox(humanoidRootPart, targetCharacter, function()  onHit(targetCharacter, config.BASE_DAMAGE[comboCount]) end)
 		end
 	end
     CooldownModule
-        .new(player.UserId, config.NAME, config.COOLDOWNS[comboCount])
+        .new(player.UserId, config.NAME, config.COOLDOWNS.server[comboCount])
         :create()
     ComboModule.update(character, 5)
 end
