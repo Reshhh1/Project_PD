@@ -3,6 +3,13 @@
     "ignoreUnknownInstances": true,
     "Children": [
       {
+        "Name": "Equip",
+        "ClassName": "Animation",
+        "Properties": {
+          "AnimationId": "rbxassetid://132964776805074"
+        }
+      },
+      {
         "Name": "Attack_1",
         "ClassName": "Animation",
         "Properties": {
