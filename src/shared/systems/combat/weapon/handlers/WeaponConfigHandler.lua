@@ -5,27 +5,28 @@ local ModuleFinder = require(ReplicatedStorage.Core.utility.ModuleFinder)
 local WeaponContainer = script.Parent.Parent.WeaponController
 local SpecialMovesContainer = script.Parent.Parent.SpecialMoves
 
+local ModuleContainer = {}
+
 local WeaponConfigHandler = {}
 
-function WeaponConfigHandler.getWeaponConfigByName(name: string)
-    return ModuleFinder.findModuleByName(name, WeaponContainer)
-end
-
 function WeaponConfigHandler.getDefaultWeaponMoveConfigByName(weaponName: string, moveName: string)
-    local config = ModuleFinder.findModuleByName(weaponName, WeaponContainer) or {}
-    if config then
-        for _, key in pairs(config) do
-            if not key.NAME then return end
-            if key.NAME == moveName then
-                return key
-            end
+    if not ModuleContainer[weaponName] then
+        ModuleContainer[weaponName] = require(ModuleFinder.findModuleByName(weaponName, WeaponContainer).Config)
+    end
+    for _, key in pairs(ModuleContainer[weaponName]) do
+        if not key.NAME then return end
+        if key.NAME == moveName then
+            return key
         end
     end
     return nil
 end
 
 function WeaponConfigHandler.getSpecialWeaponMoveConfigByName(name: string)
-    return ModuleFinder.findModuleByName(name, SpecialMovesContainer)
+    if not ModuleContainer[name] then
+        ModuleContainer[name] = ModuleFinder.findModuleByName(name, SpecialMovesContainer)
+    end
+    return ModuleContainer[name]
 end
 
 return WeaponConfigHandler
