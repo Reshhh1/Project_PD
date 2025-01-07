@@ -32,7 +32,7 @@ end
 function normalAttackRequest(tool: Tool)
 	local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-	local isOnCooldown = CooldownRemote:InvokeServer("Basic attack")
+	local isOnCooldown = CooldownRemote:InvokeServer(Config.NAME)
 	
 	if not isOnCooldown then
 		local comboCount = ComboCountRemote:InvokeServer()

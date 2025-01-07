@@ -6,13 +6,13 @@ local TechniqueContainer = script.Parent.Parent.TechniqueController
 
 local ModuleContainer = {}
 
-local TechniqueConfigurationHandler = {}
+local TechniqueConfigHandler = {}
 
-function TechniqueConfigurationHandler.getByName(name: string)
+function TechniqueConfigHandler.getByName(name: string)
     if not ModuleContainer[name] then
         ModuleContainer[name] = require(ModuleFinder.findModuleByName(name, TechniqueContainer).Config)
     end
     return ModuleContainer[name]
 end
 
-return TechniqueConfigurationHandler
+return TechniqueConfigHandler

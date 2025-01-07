@@ -1,4 +1,3 @@
-local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local CacheModule = require(ReplicatedStorage.Core.utility.CacheModule)
@@ -40,16 +39,15 @@ function handleWeaponMoves(self, input: InputObject, move)
 		 if not TechniqueCache[move.Name] then return end
 		 self.techniqueController.debounce = true
 		TechniqueCache[move.Name].init(self.tool)
-		task.wait(1) -- FIX THIS
 		self.techniqueController.debounce = false
 	end
 end
 
 function handleSpecialMoves(self, input: InputObject, move)
 	if input.KeyCode.Name == move.Value and not self.techniqueController.debounce then
+		if not TechniqueCache[move.Name] then return end
 		self.techniqueController.debounce = true
 		WeaponRemotes.WeaponAttack:InvokeServer({ weapon = self.tool, action = move.Name }, { charactersInHitbox = {}})
-		task.wait(1) -- FIX THIS
 		self.techniqueController.debounce = false
 	end
 end
