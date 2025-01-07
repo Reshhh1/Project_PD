@@ -9,7 +9,7 @@ local WeaponTypes = require(ReplicatedStorage.Core.systems.combat.weapon.types.W
 
 local Remotes = ReplicatedStorage.Core.systems.combat.weapon.remotes
 
-local MovesModules = CacheModule.loadModulesByPropertyName(script.moves, "MoveName")
+local MovesModules = CacheModule.loadModules(script.moves)
 
 local function initializeSkill(player: Player, action: string, config: WeaponTypes.WeaponMoveType, args: {})
 	local moveModule = MovesModules[action]
@@ -23,7 +23,8 @@ end
 Remotes.WeaponAttack.OnServerInvoke = function(player: Player, weaponAction: WeaponTypes.WeaponAction, args: {})
 	if not validateArguments(weaponAction, args) then return end
 	if not validateAttack(weaponAction.weapon, player, weaponAction.action) then return end
-	local config = WeaponConfigHandler.getDefaultWeaponMoveConfigByName(weaponAction.weapon.Name, weaponAction.action) or WeaponConfigHandler.getSpecialWeaponMoveConfigByName(weaponAction.action)
+	
+	local config =  WeaponConfigHandler.getByName(weaponAction.action)
 	if not config then warn(`Weapon configuration not found for: {weaponAction.action}`) return end
 	args["weapon"] = weaponAction.weapon 
 	initializeSkill(player, weaponAction.action, config, args)
