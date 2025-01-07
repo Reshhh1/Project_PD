@@ -11,9 +11,6 @@ local WeaponTypes = require(ReplicatedStorage.Core.systems.combat.weapon.types.W
 
 local BasicAttack = {}
 
--- Being used in the initilization of skills
-BasicAttack.MoveName = "Basic attack"
-
 function BasicAttack.init(player: Player, config: WeaponTypes.WeaponMoveType, args: any)
     if not validateArguments(args) then return end
     local charactersInHitbox = args.charactersInHitbox
