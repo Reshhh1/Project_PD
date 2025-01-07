@@ -12,6 +12,7 @@ local function validateArguments(weaponAction: WeaponTypes.WeaponAction, args: {
     end
 
     if not validateInstance(weaponAction.weapon, "Tool") then
+        warn(`Invalid tool`)
         return false
     end
 
