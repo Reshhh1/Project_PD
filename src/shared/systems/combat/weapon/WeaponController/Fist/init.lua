@@ -68,7 +68,7 @@ function handleSpecialMoves(self, input: InputObject)
 		if input.KeyCode.Name == move.Value and not self.skillDebounce then
 			self.skillDebounce = true
 			print("E")
-			WeaponRemotes.WeaponAttack:InvokeServer({ weapon = self.tool, action = move.Name, attackType = Config.BASIC_ATTACK.ATTACK_TYPE }, { charactersInHitbox = {}})
+			WeaponRemotes.WeaponAttack:InvokeServer({ weapon = self.tool, action = move.Name }, { charactersInHitbox = {}})
 			self.skillDebounce = false
 		end
 	end
@@ -104,7 +104,7 @@ function normalAttackRequest(tool: Tool)
 		animationTrack:GetMarkerReachedSignal("impact"):Connect(function()
 			local clientHitbox = createHitbox(humanoidRootPart)
 			local result = clientHitbox:getHitResults()
-			WeaponRemotes.WeaponAttack:InvokeServer({ weapon = tool, action = Config.BASIC_ATTACK.NAME, attackType = Config.BASIC_ATTACK.ATTACK_TYPE }, { charactersInHitbox = result})
+			WeaponRemotes.WeaponAttack:InvokeServer({ weapon = tool, action = Config.BASIC_ATTACK.NAME }, { charactersInHitbox = result})
 		end)
 		animationTrack.Stopped:Wait()
 		task.wait(Config.BASIC_ATTACK.COOLDOWNS.client)
