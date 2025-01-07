@@ -2,7 +2,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local ModuleFinder = require(ReplicatedStorage.Core.utility.ModuleFinder)
 
-local TechniqueContainer = script.Parent.Parent.TechniqueController
+local TechniqueContainer = script.Parent.Parent.controllers.TechniqueController
 
 local ModuleContainer = {}
 
