@@ -9,7 +9,7 @@ local WeaponTypes = require(ReplicatedStorage.Core.systems.combat.weapon.types.W
 
 local Remotes = ReplicatedStorage.Core.systems.combat.weapon.remotes
 
-local MovesModules = CacheModule.loadModules(script.moves)
+local MovesModules = CacheModule.loadModules(script.Techniques)
 
 local function initializeSkill(player: Player, action: string, config: WeaponTypes.WeaponMoveType, args: {})
 	local moveModule = MovesModules[action]

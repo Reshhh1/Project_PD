@@ -9,16 +9,7 @@ local WeaponModules = CacheModule.loadModules(script)
 local WeaponController = {}
 WeaponController.__index = WeaponController
 
-export type CombatController = typeof(setmetatable(
-	{} :: {
-		tool: Tool,
-		connections: {} ,
-		toolController: any
-	},
-	WeaponController
-))
-
-function WeaponController.new(tool: Tool, weaponName: string): CombatController
+function WeaponController.new(tool: Tool, weaponName: string)
 	local self = setmetatable({
 		tool = tool,
 		toolController = WeaponModules[weaponName].new(tool),
@@ -29,7 +20,7 @@ function WeaponController.new(tool: Tool, weaponName: string): CombatController
 	return self
 end
 
-function WeaponController.init(self: CombatController)
+function WeaponController.init(self)
 	self:_addConnection(self.tool.Equipped:Connect(function()
 		self.toolController:equip()
 	end))
@@ -42,7 +33,7 @@ function WeaponController.init(self: CombatController)
 	end))
 end
 
-function WeaponController._addConnection(self: CombatController, connection: RBXScriptConnection)
+function WeaponController._addConnection(self, connection: RBXScriptConnection)
 	table.insert(self.connections, connection)
 end
 
