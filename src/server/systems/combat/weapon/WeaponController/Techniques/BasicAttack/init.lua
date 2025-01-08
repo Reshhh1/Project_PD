@@ -1,6 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
+local ReplicationModule = require(ReplicatedStorage.Core.modules.Replication.ReplicationModule)
 local ComboModule = require(ServerScriptService.Core.systems.combat.modules.ComboModule)
 local HitboxHandler = require(ServerScriptService.Core.handlers.HitboxHandler)
 local CooldownModule = require(ServerScriptService.Core.utility.Cooldown)
@@ -18,9 +19,10 @@ function BasicAttack.init(player: Player, config: WeaponTypes.WeaponMoveType, ar
 	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
     local comboCount = ComboModule.get(character)
         
+    ReplicationModule.replicateToClients(config.NAME, "init", humanoidRootPart, 100, {})
 	if humanoidRootPart then
 		for _, targetCharacter in pairs(charactersInHitbox) do
-			HitboxHandler.handleCharactersInHitbox(humanoidRootPart, targetCharacter, function()  onHit(targetCharacter, config.BASE_DAMAGE[comboCount]) end)
+			HitboxHandler.handleCharactersInHitbox(humanoidRootPart, targetCharacter, function() onHit(targetCharacter, config.BASE_DAMAGE[comboCount]) end)
 		end
 	end
     CooldownModule
